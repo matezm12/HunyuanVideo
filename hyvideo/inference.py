@@ -1,6 +1,5 @@
 import os
 import time
-import random
 import functools
 from typing import List, Optional, Tuple, Union
 
@@ -18,6 +17,7 @@ from hyvideo.modules.posemb_layers import get_nd_rotary_pos_embed
 from hyvideo.modules.fp8_optimization import convert_fp8_linear
 from hyvideo.diffusion.schedulers import FlowMatchDiscreteScheduler
 from hyvideo.diffusion.pipelines import HunyuanVideoPipeline
+import secrets
 
 try:
     import xfuser
@@ -535,7 +535,7 @@ class HunyuanVideoSampler(Inference):
             seed = seed.tolist()
         if seed is None:
             seeds = [
-                random.randint(0, 1_000_000)
+                secrets.SystemRandom().randint(0, 1_000_000)
                 for _ in range(batch_size * num_videos_per_prompt)
             ]
         elif isinstance(seed, int):
